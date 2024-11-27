@@ -4,11 +4,16 @@ project(untitled)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(untitled main.cpp
-        include/Sistema.h
-        include/Vuelo.h
-        include/Usuario.h
-        include/Reservacion.h
+        include/controllers/Sistema.h
+        include/models/Vuelo.h
+        include/models/Usuario.h
+        include/models/Reservacion.h
         ../Aeropuerto/include/test.h
         src/Sistema.cpp
         include/Sistema.cpp
+        include/models/Avion.h
+        include/controllers/ManejadorAvion.h
+        include/controllers/ManejadorUsuario.h
+        include/controllers/ManejadorVuelo.h
+        include/controllers/ManejadorReserva.h
 )

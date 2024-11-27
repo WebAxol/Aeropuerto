@@ -13,20 +13,24 @@ using namespace std;
 
 class Usuario {
     private:
-        const int id;
         string nombre;
         string claveAcceso;
-        map<int, Reservacion> reservas;
+        map<int, Reservacion*> reservas;
         float  kilometros = 0;
 
     public:
-        Usuario(int id, string nombre, string claveAcceso) :
-            id(id),
+        Usuario(string nombre, string claveAcceso) :
             nombre(nombre),
             claveAcceso(claveAcceso)
         {};
-        void reservar(Reservacion r);
+        void agregarReservacion(int id, Reservacion* r) {
+            this->reservas[id] = r;
+        };
         void cancelarReservacion(int idReservacion);
+
+        string getNombre() {
+            return nombre;
+        }
 };
 
 

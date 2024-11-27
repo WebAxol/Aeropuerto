@@ -1,5 +1,5 @@
 #include <iostream>
-#include "./include/Sistema.h"
+#include "./include/controllers/Sistema.h"
 #include <fstream>
 
 using namespace std;
@@ -10,8 +10,7 @@ int main() {
 
     Sistema s1;
 
-    s1.cargarUsuarios();
-
+    s1.consultarVuelos();
 }
 
 // TIP See CLion help at <a
