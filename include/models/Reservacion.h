@@ -11,13 +11,34 @@ using namespace std;
 
 class Reservacion {
     private:
-        const Vuelo* vuelo;
-        const int asiento;
+        const int id;
+        const int idUsuario;
+        const int idVuelo;
+        const int numeroAsiento;
     public:
-        Reservacion(const Vuelo* vuelo, int asiento) :
-            vuelo(vuelo), asiento(asiento)
+        Reservacion(
+            int id,
+            int idUsuario,
+            int idVuelo,
+            int numeroAsiento
+        ) :
+            id(id),
+            idUsuario(idUsuario),
+            idVuelo(idVuelo),
+            numeroAsiento(numeroAsiento)
         {};
-
+        int getId() const {
+          return id;
+        };
+        int getIdUsuario() const {
+          return idUsuario;
+        };
+        int getIdVuelo() const {
+          return idVuelo;
+        };
+        int getNumeroAsiento() const {
+          return numeroAsiento;
+        };
 };
 
 

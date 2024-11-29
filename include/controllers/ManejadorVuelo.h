@@ -11,11 +11,12 @@
 #include "../models/Vuelo.h"
 
 class ManejadorVuelo{
+
   private:
-    map<int, Vuelo*> vuelos;
+    Vuelo* vuelos[100];
+    int proximoIdVuelo = 0;
 
-
-  void cargarVuelos( map<int, Avion*> aviones ) {
+  void cargarVuelos() {
 
     string linea;
 
@@ -37,19 +38,21 @@ class ManejadorVuelo{
       string destino;
       ss >> destino;
 
-      float precio;
-      ss >> precio;
-
+      float precio, kilometros;
+      ss >> precio >> kilometros;
       ss >> pasajeros;
 
-      // Se relaciona al vuelo con su avion correspondiente
-      // Varios vuelos pueden tener un mismo avion asociado
-      Avion* avion = aviones[idAvion];
+      this->vuelos[id] = new Vuelo(
+        id,
+        idAvion,
+        origen,
+        destino,
+        precio,
+        kilometros,
+        pasajeros
+      );
 
-      if (avion == NULL) {
-        cerr << "Atencion: el avion con identificacion " << idAvion << " no existe" << endl;
-      }
-      else this->vuelos[id] = new Vuelo(origen,destino,avion, precio, pasajeros);
+      proximoIdVuelo = max(proximoIdVuelo, id + 1);
     }
 
     vuelos.close();
@@ -57,34 +60,18 @@ class ManejadorVuelo{
 
   public:
 
-    ManejadorVuelo( map<int, Avion*> aviones) {
-      this->cargarVuelos(aviones);
+    ManejadorVuelo() {
+      this->cargarVuelos();
     }
 
-    void consultarVuelos() {
 
-      // Imprime un listado de los vuelos con sus atributos
+    Vuelo** getVuelos() {
+      return vuelos;
+    }
 
-      cout << "Vuelos" << endl << endl;
-
-      for (auto it = vuelos.begin(); it != vuelos.end(); it++) {
-
-        Vuelo* vuelo = it->second;
-
-        // Filtrar vuelos por disponibilidad
-
-        if (!vuelo->disponible()) continue;
-
-        cout << "Identificador : " << it->first << endl;
-        cout << "Aerolinea : " << vuelo->getAerolinea() << endl;
-        cout << "Origen : "   << vuelo->getOrigen() << endl;
-        cout << "Destino : " << vuelo->getDestino() << endl;
-        cout << "Precio : " << vuelo->getPrecio() << endl;
-
-        cout << endl;
-
-      }
-    };
+    Vuelo* getVuelo(int id) {
+      return this->vuelos[id];
+    }
 };
 
 #endif //MANEJADORVUELO_H

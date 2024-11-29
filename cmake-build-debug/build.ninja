@@ -55,12 +55,6 @@ build CMakeFiles/untitled.dir/main.cpp.o: CXX_COMPILER__untitled_unscanned_Debug
   OBJECT_DIR = CMakeFiles/untitled.dir
   OBJECT_FILE_DIR = CMakeFiles/untitled.dir
 
-build CMakeFiles/untitled.dir/include/test.cpp.o: CXX_COMPILER__untitled_unscanned_Debug /home/gabriel/CLionProjects/untitled/include/test.cpp || cmake_object_order_depends_target_untitled
-  DEP_FILE = CMakeFiles/untitled.dir/include/test.cpp.o.d
-  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles/untitled.dir
-  OBJECT_FILE_DIR = CMakeFiles/untitled.dir/include
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target untitled
@@ -69,7 +63,7 @@ build CMakeFiles/untitled.dir/include/test.cpp.o: CXX_COMPILER__untitled_unscann
 #############################################
 # Link the executable untitled
 
-build untitled: CXX_EXECUTABLE_LINKER__untitled_Debug CMakeFiles/untitled.dir/main.cpp.o CMakeFiles/untitled.dir/include/test.cpp.o
+build untitled: CXX_EXECUTABLE_LINKER__untitled_Debug CMakeFiles/untitled.dir/main.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/untitled.dir
   POST_BUILD = :

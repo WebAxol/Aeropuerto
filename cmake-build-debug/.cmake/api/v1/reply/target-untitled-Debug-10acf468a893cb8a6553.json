@@ -49,8 +49,7 @@
 			},
 			"sourceIndexes" : 
 			[
-				0,
-				5
+				0
 			]
 		}
 	],
@@ -83,8 +82,7 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0,
-				5
+				0
 			]
 		},
 		{
@@ -95,7 +93,11 @@
 				2,
 				3,
 				4,
-				6
+				5,
+				6,
+				7,
+				8,
+				9
 			]
 		}
 	],
@@ -109,33 +111,47 @@
 		},
 		{
 			"backtrace" : 1,
-			"path" : "include/Sistema.h",
+			"path" : "include/controllers/Sistema.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
-			"path" : "include/Vuelo.h",
+			"path" : "include/models/Vuelo.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
-			"path" : "include/Usuario.h",
+			"path" : "include/models/Usuario.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
-			"path" : "include/Reservacion.h",
+			"path" : "include/models/Reservacion.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
-			"compileGroupIndex" : 0,
-			"path" : "include/test.cpp",
-			"sourceGroupIndex" : 0
+			"path" : "include/models/Avion.h",
+			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
-			"path" : "include/test.h",
+			"path" : "include/controllers/ManejadorAvion.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/controllers/ManejadorUsuario.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/controllers/ManejadorVuelo.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/controllers/ManejadorReserva.h",
 			"sourceGroupIndex" : 1
 		}
 	],

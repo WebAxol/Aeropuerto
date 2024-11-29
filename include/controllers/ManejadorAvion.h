@@ -49,9 +49,13 @@ class ManejadorAvion {
             this->cargarAviones();
         };
 
-    map<int, Avion*> getAviones() {
-        return this->aviones;
-    }
+        map<int, Avion*> getAviones() {
+            return this->aviones;
+        }
+
+        Avion* getAvionById(int id) {
+            return this->aviones[id];
+        }
 
 
 };

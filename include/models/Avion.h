@@ -5,8 +5,6 @@
 #ifndef AVION_H
 #define AVION_H
 
-#include <vector>
-
 using namespace std;
 
 class Avion {
@@ -17,8 +15,16 @@ class Avion {
         const string modelo;
         const int capacidad;
     public:
-        Avion(int id, string aerolinea, string modelo, int capacidad) :
-            id(id), aerolinea(aerolinea), modelo(modelo), capacidad(capacidad)
+        Avion(
+            const int id,
+            string aerolinea,
+            string modelo,
+            int capacidad
+        ) :
+            id(id),
+            aerolinea(move(aerolinea)),
+            modelo(move(modelo)),
+            capacidad(capacidad)
         {};
 
         int getId() const {

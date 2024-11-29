@@ -16,13 +16,14 @@
 
 class ManejadorReserva {
     private:
-          map<int,Reservacion*> reservas;
+          Reservacion* reservas[100];
+          int proximoIdReserva = 0;
 
-          void cargarReservaciones(map<int,Usuario*> usuarios, map<int,Vuelo*> vuelos) {
+          void cargarReservaciones() {
 
             string linea;
 
-            ifstream reservas("./data/reservas.csv");
+            ifstream reservas("./data/reservaciones.csv");
 
             if(!reservas.is_open()) {
                 cerr << "Error al abrir el archivo reservas.csv" << endl;
@@ -31,31 +32,18 @@ class ManejadorReserva {
             while (getline( reservas, linea)) {
                 stringstream ss(linea);
 
-                int id;
-                ss >> id;
+                int id, idUsuario, idVuelo, asiento;
+                ss >> id >> idUsuario >> idVuelo >> asiento;
 
-                int idVuelo;
-                ss >> idVuelo;
+                Reservacion* reservacion = new Reservacion(
+                    id,
+                    idUsuario,
+                    idVuelo,
+                    asiento
+                );
 
-                int idUsuario;
-                ss >> idUsuario;
-
-                int asiento;
-                ss >> asiento;
-
-                // El vuelo se agrega al objeto reserva
-                Vuelo* vuelo = vuelos[idVuelo];
-                // El objeto reserva se agrega al usuario
-                Usuario* usuario = usuarios[id];
-
-                if (vuelo == NULL || usuario == NULL) {
-                    cerr << "Atención: la reservación número" << id << " es inválida" << endl;
-                    return;
-                }
-
-                Reservacion* reservacion = new Reservacion(vuelo, asiento);
-                usuario->agregarReservacion(id, reservacion);
                 this->reservas[id] = reservacion;
+                proximoIdReserva = max(proximoIdReserva, id + 1);
             }
 
             reservas.close();
@@ -65,19 +53,98 @@ class ManejadorReserva {
 
             ofstream reservas("./data/reservaciones.csv");
 
-            for (auto it = this->reservas.begin(); it != this->reservas.end(); it++) {
+            for (int i = 0; i < this->proximoIdReserva; i++) {
 
-                Reservacion* reserva = it->second;
+                Reservacion* reserva = this->reservas[i];
 
-                reservas << it->first << " ";
+                if (reserva == nullptr) continue;
+                if (reserva->getId() <= 0 || reserva->getId() > 100) continue;
+
+                cout << reserva->getId() << endl;
+
+                reservas << reserva->getId() << " ";
                 reservas << reserva->getIdUsuario() << " ";
-                reservas << reserva->getClave();
+                reservas << reserva->getIdVuelo() << " ";
+                reservas << reserva->getNumeroAsiento() << " ";
                 reservas << "\n";
             }
 
             reservas.close();
-        }
+        };
     public:
+        ManejadorReserva() {
+          this->cargarReservaciones();
+        }
+
+        void crearReservacion(int idUsuario, int idVuelo, int asiento) {
+
+          int idReserva = ++proximoIdReserva;
+
+          Reservacion* reserva = new Reservacion(
+              idReserva,
+              idUsuario,
+              idVuelo,
+              asiento
+          );
+
+            this->reservas[idReserva] = reserva;
+
+            // TODO : Arreglar metodo guardarReservas();
+            //guardarReservas();
+
+            cout << "Reservacion creada: " << idReserva << endl;
+        };
+
+        bool buscarAsientoDisponible(int idVuelo, int capacidad) {
+
+            int asientos[capacidad];
+
+              // Busca una reservación cuyo vuelo y número de asiento coincidan
+
+              for(auto reserva : this->reservas) {
+
+                if(reserva == nullptr) continue;
+
+                if (reserva->getIdVuelo() == idVuelo) {
+                    int ocupado = reserva->getNumeroAsiento();
+                    asientos[ocupado] = 1;
+                }
+              }
+                for (int i = 0; i < capacidad; i++) {
+                    if (asientos[i] == 1) continue;
+                    else return i;
+                }
+              // Nadia ha reservado, asi que esta disponible
+              return -1;
+        };
+
+        Reservacion* buscarPorId(int id) {
+            return reservas[id];
+        };
+
+        void mostrarReservasUsuario(int idUsuario){
+
+            for( auto reserva : reservas) {
+                  if(reserva == nullptr) continue;
+
+                  // Filtrar reservas del usuario dado
+
+                  if(reserva->getIdUsuario() != idUsuario) continue;
+
+                  cout << "Identificador: " << reserva->getId() << endl;
+                  cout << "Numero de vuelo: " << reserva->getIdVuelo() << endl;
+                  cout << "Numero de asiento: " << reserva->getNumeroAsiento() << endl;
+                  cout << endl;
+            }
+        }
+
+        void eliminarReserva(int id) {
+            reservas[id] = nullptr;
+
+            //guardarReservas();
+        }
+
+
 };
 
 

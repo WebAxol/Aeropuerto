@@ -5,7 +5,6 @@
 #ifndef MANEJADORUSUARIO_H
 #define MANEJADORUSUARIO_H
 
-#include <map>
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -16,25 +15,25 @@ using namespace std;
 class ManejadorUsuario {
 
     private:
-        int proximoIdUsuario;
-        map<int, Usuario*> usuarios;
+        int proximoIdUsuario = 0;
+        Usuario* usuarios[100];
 
-    void guardarUsuario(){
+    void guardarUsuarios(){
 
         ofstream usuarios("./data/usuarios.csv");
 
-        for (auto it = this->usuarios.begin(); it != this->usuarios.end(); it++) {
+        for (auto usuario : this->usuarios) {
 
-            Usuario* usuario = it->second;
+            if (usuario == nullptr) continue;
 
-            usuarios << it->first << " ";
+            usuarios << usuario->getId() << " ";
             usuarios << usuario->getNombre() << " ";
             usuarios << usuario->getClave();
             usuarios << "\n";
         }
 
         usuarios.close();
-    }
+    };
 
     void cargarUsuarios() {
 
@@ -60,7 +59,12 @@ class ManejadorUsuario {
             string clave;
             ss >> clave;
 
-            this->usuarios[id] = new Usuario(nombre, clave);
+            this->usuarios[id] = new Usuario(
+                id,
+                nombre,
+                clave
+            );
+            proximoIdUsuario = max(proximoIdUsuario, id + 1);
         }
 
         usuarios.close();
@@ -70,28 +74,33 @@ class ManejadorUsuario {
 
         ManejadorUsuario() {
             this->cargarUsuarios();
-            this->proximoIdUsuario = this->usuarios.size() + 1;
-        }
+        };
 
-        int buscarUsuario(string nombre) {
+        Usuario* buscarUsuarioPorId(int id) {
+            return this->usuarios[id];
+        };
+
+        int buscarIdPorNombre(string nombre) {
 
             // Busca el ID del usuario cuyo nombre sea igual al nombre dado
 
-            for (auto it = this->usuarios.begin(); it != this->usuarios.end(); it++) {
-                if(it->second->getNombre() == nombre) return it->first;
+            for (auto usuario : usuarios) {
+                if (usuario == nullptr) continue;
+
+                if(usuario->getNombre() == nombre) return usuario->getId();
             }
 
             return -1;
-        }
+        };
 
-        int iniciarSesion(string nombre, string clave) {
+        Usuario* iniciarSesion(string nombre, string clave) {
 
             // Primero verifica que exista un nombre con tal nombre
-            int idUsuario = this->buscarUsuario(nombre);
+            int idUsuario = this->buscarIdPorNombre(nombre);
 
             if(idUsuario == -1){
                 cout << "No se encontra el usuario " << nombre << endl;
-                return -1;
+                return nullptr;
             }
             Usuario* usuario = usuarios[idUsuario];
 
@@ -99,15 +108,14 @@ class ManejadorUsuario {
 
             if(usuario->getClave() != clave){
                 cout << "La clave es incorrecta" << endl;
-                return -1;
+                return nullptr;
             }
-
-            return idUsuario;
-        }
+            return usuario;
+        };
 
         int registrarUsuario(string nombre, string clave) {
 
-            bool existe = this->buscarUsuario(nombre) > 0;
+            bool existe = this->buscarIdPorNombre(nombre) > 0;
 
 
             if(existe){
@@ -115,15 +123,31 @@ class ManejadorUsuario {
                 return -1;
             }
 
-            Usuario* nuevoUsuario = new Usuario(nombre, clave);
+            int idUsuario = this->proximoIdUsuario;
 
-            int idUsuario = ++this->proximoIdUsuario;
+            Usuario* nuevoUsuario = new Usuario(
+                idUsuario,
+                nombre,
+                clave
+            );
+
+            // TODO: Arreglar metodo guardartUsuarios();
+            // this->guardarUsuarios();
 
             this->usuarios[idUsuario] = nuevoUsuario;
 
-            this->guardarUsuario();
+            proximoIdUsuario++;
+
 
             return idUsuario;
+        };
+
+        void sumarKilometros(int idUsuario, float kilometros) {
+            this->usuarios[idUsuario]->sumarKilometros(kilometros);
+        }
+
+        float consultarKilometrosPorId(int id) {
+            return this->usuarios[id]->getKilometros();
         }
 };
 

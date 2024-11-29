@@ -5,34 +5,45 @@
 #ifndef USUARIO_H
 #define USUARIO_H
 #include <string>
-#include <map>
-
-#include "Reservacion.h"
+#include <utility>
 
 using namespace std;
 
 class Usuario {
     private:
+        const int id;
         string nombre;
         string claveAcceso;
-        map<int, Reservacion*> reservas;
+        int    reservas = 0;
         float  kilometros = 0;
-
     public:
-        Usuario(string nombre, string claveAcceso) :
-            nombre(nombre), claveAcceso(claveAcceso)
+
+        Usuario(
+            int id,
+            string nombre,
+            string  claveAcceso
+        ) :
+            id(id),
+            nombre(move(nombre)),
+            claveAcceso(move(claveAcceso))
         {};
-        void agregarReservacion(int id, Reservacion* r) {
-            this->reservas[id] = r;
-        };
-        void cancelarReservacion(int idReservacion);
 
         string getNombre() {
             return nombre;
-        }
+        };
 
         string getClave() {
             return claveAcceso;
+        };
+        int getId() const {
+            return id;
+        }
+        float getKilometros() {
+            return kilometros;
+        }
+
+        void sumarKilometros(float kilometros) {
+            this->kilometros += kilometros;
         }
 };
 

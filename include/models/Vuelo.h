@@ -5,27 +5,44 @@
 #ifndef VUELO_H
 #define VUELO_H
 
-#include "Avion.h"
+#include <utility>
 
 using namespace std;
 
 
 class Vuelo {
     private:
+        const int id;
+        const int idAvion;
         const string origen;
         const string destino;
         const float precio;
-        const Avion* avion;
+        float kilometros;
         int pasajeros;
     public:
-        Vuelo(string origen, string destino, Avion* avion, float precio, int pasajeros) :
-            origen(origen), destino(destino), avion(avion), precio(precio), pasajeros(pasajeros)
+        Vuelo(
+            int id,
+            int idAvion,
+            string origen,
+            string destino,
+            float precio,
+            float kilometros,
+            int pasajeros
+        ) :
+            id(id),
+            idAvion(idAvion),
+            origen(move(origen)),
+            destino(move(destino)),
+            precio(precio),
+            kilometros(kilometros),
+            pasajeros(pasajeros)
         {};
-
-        bool disponible() {
-            return this->avion->getCapacidad() > this->pasajeros;
-        }
-
+        int getId() const {
+            return id;
+        };
+        int getIdAvion() const {
+            return idAvion;
+        };
         string getOrigen() const {
             return origen;
         };
@@ -34,16 +51,14 @@ class Vuelo {
             return destino;
         };
 
-        string getAerolinea() const {
-            return avion->getAerolinea();
-        };
-
         float getPrecio() const {
             return precio;
         }
-
-        const Avion* getAvion() const {
-            return avion;
+        int getPasajeros() const {
+            return pasajeros;
+        }
+        float getKilometros() {
+            return kilometros;
         }
 };
 
