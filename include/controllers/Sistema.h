@@ -6,13 +6,11 @@
 #define SISTEMA_H
 
 #include <fstream>
-#include <sstream>
 #include <map>
 
 #include "../models/Vuelo.h"
 #include "../models/Avion.h"
 #include "../models/Usuario.h"
-#include "../models/Reservacion.h"
 
 #include "ManejadorAvion.h"
 #include "ManejadorVuelo.h"
@@ -23,41 +21,36 @@ using namespace std;
 
 class Sistema {
     private:
-        const int proximoIdUsuario = 1;
-        const int proximoIdVuelo = 1;
+        int proximoIdVuelo;
         map<int, Vuelo*> vuelos;
-        map<int, Usuario*> usuarios;
-
-        // Los datos se cargan de sus respectivos archivos .csv, y se modelan los objetos según sus clases
-        // TODO: Separar logica relacionada con carga de datos de las funcionalidades principales
+        ManejadorAvion*   manejadorAvion;
+        ManejadorUsuario* manejadorUsuario;
+        ManejadorVuelo*   manejadorVuelo;
 
     public:
         Sistema() {
-            map<int, Avion*> aviones = ManejadorAvion::cargarAviones();
-            map<int, Vuelo*> vuelos  = ManejadorVuelo::cargarVuelos(aviones);
-            this->vuelos = vuelos;
+
+            manejadorUsuario = new ManejadorUsuario();
+            manejadorAvion   = new ManejadorAvion();
+
+            map<int, Avion*> aviones = manejadorAvion->getAviones();
+
+            manejadorVuelo   = new ManejadorVuelo(aviones);
         };
+
+
+        int registrarUsuario(string nombre, string clave) {
+            return this->manejadorUsuario->registrarUsuario(nombre, clave);
+        }
+
+        int iniciarSesion(string nombre, string clave) {
+            return this->manejadorUsuario->iniciarSesion(nombre, clave);
+        }
 
         void consultarVuelos() {
+            this->manejadorVuelo->consultarVuelos();
+        }
 
-            // Imprime un listado de los vuelos con sus atributos
-
-            cout << "Vuelos" << endl << endl;
-
-            for (auto it = vuelos.begin(); it != vuelos.end(); it++) {
-
-                Vuelo* vuelo = it->second;
-
-                cout << "Identificador : " << it->first << endl;
-                cout << "Aerolinea : " << vuelo->getAerolinea() << endl;
-                cout << "Origen : "   << vuelo->getOrigen() << endl;
-                cout << "Destino : " << vuelo->getDestino() << endl;
-                cout << endl;
-
-            }
-        };
-
-        void reservar(int idUsuario, int idVuelo);
         void cancelarReservacion(int idUsuario, int idReservacion);
 };
 

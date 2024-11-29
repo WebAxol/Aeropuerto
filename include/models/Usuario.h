@@ -20,8 +20,7 @@ class Usuario {
 
     public:
         Usuario(string nombre, string claveAcceso) :
-            nombre(nombre),
-            claveAcceso(claveAcceso)
+            nombre(nombre), claveAcceso(claveAcceso)
         {};
         void agregarReservacion(int id, Reservacion* r) {
             this->reservas[id] = r;
@@ -30,6 +29,10 @@ class Usuario {
 
         string getNombre() {
             return nombre;
+        }
+
+        string getClave() {
+            return claveAcceso;
         }
 };
 

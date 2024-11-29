@@ -14,12 +14,14 @@
 using namespace std;
 
 class ManejadorAvion {
-public:
-    static map<int, Avion*> cargarAviones() {
+    private:
+        map<int, Avion*> aviones;
 
-        map<int, Avion*> objAviones;
+    void cargarAviones() {
 
         string linea;
+
+        // Advertencia: la resolución de rutas difiere según el sistema y la configuración del mismo
 
         ifstream aviones("./data/aviones.csv");
 
@@ -30,21 +32,28 @@ public:
         while (getline( aviones, linea)) {
             stringstream ss(linea);
 
-            int id;
+            int id, capacidad;
             ss >> id;
 
-            string aerolinea;
-            ss >> aerolinea;
+            string aerolinea, modelo;
+            ss >> aerolinea >> modelo;
+            ss >> capacidad;
 
-            string modelo;
-            ss >> modelo;
-
-            objAviones[id] = new Avion(id, aerolinea, modelo);
+            this->aviones[id] = new Avion(id, aerolinea, modelo, capacidad);
         }
         aviones.close();
-
-        return objAviones;
     };
+
+    public:
+        ManejadorAvion() {
+            this->cargarAviones();
+        };
+
+    map<int, Avion*> getAviones() {
+        return this->aviones;
+    }
+
+
 };
 
 

@@ -8,9 +8,6 @@ add_executable(untitled main.cpp
         include/models/Vuelo.h
         include/models/Usuario.h
         include/models/Reservacion.h
-        ../Aeropuerto/include/test.h
-        src/Sistema.cpp
-        include/Sistema.cpp
         include/models/Avion.h
         include/controllers/ManejadorAvion.h
         include/controllers/ManejadorUsuario.h
